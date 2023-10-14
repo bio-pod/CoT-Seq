@@ -1,0 +1,4 @@
+# each name should be different
+# name    folder                 file_name without .gz extension
+#XXX   ../download/XXX/   XXX_1.fq   XXX_2.fq
+YYY   ../download/YYY/   YYY_1.fq   YYY_2.fq

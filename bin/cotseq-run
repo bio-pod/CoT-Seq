@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+image_tag=biopod/cotseq:0.0.1
+
+while getopts d flag
+do
+    case "${flag}" in
+        d) detached="true";;
+    esac
+done
+
+if [ "${detached}" == "true" ]
+then
+    script=$2
+    if [ ! -f "${script}" ]
+    then
+        echo "File ${script} does not exist."
+        exit
+    fi
+    echo "Detached mode: one ${image_tag} container started in the background."
+    echo "To list the ids or names of the running containers, use:"
+    echo "-> docker ps -a"
+    echo "To kill a running container, use:"
+    echo "-> docker kill CONTAINER_ID or docker kill CONTAINER_NAME"
+    docker run --rm -d \
+           --mount type=bind,source=$(realpath $(pwd)),target=/mnt \
+           --user $(id -u):$(id -g) \
+           ${image_tag} \
+           /usr/bin/env bash "${script}"
+else
+    script=$1
+    if [ ! -f "${script}" ]
+    then
+        echo "File ${script} does not exist."
+        exit
+    fi
+    docker run --rm \
+           --mount type=bind,source=$(realpath $(pwd)),target=/mnt \
+           --user $(id -u):$(id -g) \
+           ${image_tag} \
+           /usr/bin/env bash "${script}"
+fi
+

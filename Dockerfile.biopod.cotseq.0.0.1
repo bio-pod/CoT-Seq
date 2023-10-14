@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1
+FROM debian:12.0-slim AS build
+LABEL Description="cotseq:0.0.1 build"
+
+ENV TZ=America/Chicago \
+    DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /app
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install \
+    vim gcc g++ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY ./packages/0.0.1/template-cap-seq-near-5-prime-end /app/template-cap-seq-near-5-prime-end 
+COPY ./packages/0.0.1/template-cap-seq-exact-5-prime-end /app/template-cap-seq-exact-5-prime-end
+COPY ./packages/0.0.1/Miniconda3-py310_23.5.2-0-Linux-x86_64.sh /app/
+RUN cd /app/ && /bin/bash ./Miniconda3-py310_23.5.2-0-Linux-x86_64.sh -b -p /app/miniconda
+ENV PATH=/app/miniconda/bin:${PATH}
+
+## Install conda packages
+RUN conda install -c bioconda -c conda-forge bowtie2=2.5.1
+#    # conda install -y -q numpy=1.20.3
+
+
+FROM debian:12.0-slim AS runtime
+LABEL Description="cotseq:0.0.1 runtime"
+
+ENV TZ=America/Chicago \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install \
+    vim gcc g++ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /app/miniconda /app/miniconda
+COPY --from=build /app/template-cap-seq-near-5-prime-end /app/template-cap-seq-near-5-prime-end
+COPY --from=build /app/template-cap-seq-exact-5-prime-end /app/template-cap-seq-exact-5-prime-end
+ENV PATH=/app/miniconda/bin:${PATH}
+
+WORKDIR /mnt

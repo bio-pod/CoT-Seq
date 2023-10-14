@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+mode=$1
+namespace="biopod"
+repository="cotseq"
+tag="0.0.1"
+[[ -z "${mode}" ]] && echo "usage: ./pipeline mode  [mode options: build, run, remove, push]" && exit
+[[ -z "${namespace}" ]] && echo "please provide namespace" && exit
+[[ -z "${repository}" ]] && echo "please provide repository" && exit
+[[ -z "${tag}" ]] && echo "please provide tag" && exit
+echo "mode: ${mode}"
+echo "namespace: ${namespace}"
+echo "repository: ${repository}"
+echo "tag: ${tag}"
+
+if [[ ${mode} == "build" ]]
+then
+    mkdir -p ./docker/{images,logs}
+    docker rmi ${namespace}/${repository}:${tag}
+    docker build -f Dockerfile.${namespace}.${repository}.${tag} -t ${namespace}/${repository}:${tag} . \
+                  > ./docker/logs/${namespace}.${repository}.${tag}.log 2>&1
+    docker save ${namespace}/${repository}:${tag} | gzip > ./docker/images/${namespace}.${repository}.${tag}.tar.gz
+elif [[ ${mode} == "run" ]]
+then
+    docker run --rm -it ${namespace}/${repository}:${tag}
+elif [[ ${mode} == "remove" ]]
+then
+    docker rmi ${namespace}/${repository}:${tag}
+elif [[ ${mode} == "push" ]]
+then
+    docker login -u ${namespace}
+    docker push ${namespace}/${repository}:${tag}
+else
+    echo "unrecognized mode option!"
+    echo "usage: ./pipeline mode  [mode options: build, run, remove, push]"
+fi
