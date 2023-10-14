@@ -1,4 +1,4 @@
 # CoT-Seq
 ## co-transcriptional sequencing
 
-template workflow can be found in */app/* folder
+template workflow can be found in */app/* folder inside the container.
