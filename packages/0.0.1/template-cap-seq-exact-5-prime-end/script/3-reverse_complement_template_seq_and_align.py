@@ -17,4 +17,4 @@ os.system(f'bowtie2-build {bowtie_dir}/template_seq_reverse_and_complement.fa {b
 for name, R1R2_dir, R1, R2 in R1R2s:
     print(f'------------------------------------------------------------', flush=True)
     print(f'process R2 -> {R2}', flush=True)
-    os.system(f'cd {bowtie_dir} ; bowtie2 --local -x template_seq_reverse_and_complement -U ../{R2}-clean-without-cap -S {R2}-clean-without-cap.sam -p 26 --reorder')
+    os.system(f'cd {bowtie_dir} ; bowtie2 --local -x template_seq_reverse_and_complement -U ../{R2}-clean-without-cap -S {R2}-clean-without-cap.sam -p 24 --reorder')

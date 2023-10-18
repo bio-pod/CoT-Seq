@@ -21,3 +21,4 @@ python ./script/5-match_position.py >> ${log}
 python ./script/6-merge-seq-with-offset.py >> ${log}
 python ./script/7-merge-seq-with-offset-both-matched-and-not-matched.py >> ${log}
 bash ./script/statistics.sh >> ${log}
+gzip -r ./result/
