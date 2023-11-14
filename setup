@@ -24,8 +24,8 @@ if [ ! -d "${current_dir}" ]; then
 fi
 
 # give the user an option to exit setup
-echo -e "$CAT - Image (${image_tag}) will be pulled from Docker Hub and scripts (${script_prefix}-env,${script_prefix}-run,${script_prefix}-test) will be installed to the ${install_path}"
-read -rep $'[\e[1;33mACTION\e[0m] - Would you like to continue with the setup (y,n) ' CONTINST
+echo -e "$CAT - Image (${image_tag}) will be pulled from Docker Hub and script ${script_prefix}-pod will be installed to the ${install_path}."
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to continue with the setup (y,n)' CONTINST
 if [[ $CONTINST == "Y" || $CONTINST == "y" ]]; then
     echo -e "$CNT - Setup started."
 else
@@ -38,11 +38,8 @@ echo -e "$CNT - Pulling ${image_tag} from Docker Hub."
 docker pull ${image_tag}
 
 # install scripts
-echo -e "$CNT - Installing ${script_prefix}-env, ${script_prefix}-run, and ${script_prefix}-test to ${install_path}."
-for suffix in env run test
-do
-    sed -i '/^image_tag/d' ./bin/${script_prefix}-${suffix}
-    sed -i "1 aimage_tag=${image_tag}" ./bin/${script_prefix}-${suffix}
-done
-sudo cp -a ./bin/${script_prefix}-env ./bin/${script_prefix}-run ./bin/${script_prefix}-test ${install_path} && \
+echo -e "$CNT - Installing ${script_prefix}-pod to ${install_path}."
+sed -i '/^image_tag/d' ./bin/${script_prefix}-pod
+sed -i "1 aimage_tag=${image_tag}" ./bin/${script_prefix}-pod
+sudo cp -a ./bin/${script_prefix}-pod ${install_path} && \
 echo -e "$COK - Setup has completed!"

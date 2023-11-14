@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-image_tag=biopod/cotseq:0.0.1
-
-echo "Testing ${image_tag}..."
-docker run --rm -it ${image_tag} /bin/bash -c 'bash /app/test.sh'

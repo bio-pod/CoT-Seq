@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-image_tag=biopod/cotseq:0.0.1
-
-echo "Starting ${image_tag} container in current dir -> $(pwd)"
-docker run --rm -it \
-       --mount type=bind,source=$(realpath $(pwd)),target=/mnt \
-       --user $(id -u):$(id -g) \
-       ${image_tag}
-
