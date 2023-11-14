@@ -25,7 +25,7 @@ fi
 
 # give the user an option to exit setup
 echo -e "$CAT - Image (${image_tag}) will be pulled from Docker Hub and script ${script_prefix}-pod will be installed to the ${install_path}."
-read -rep $'[\e[1;33mACTION\e[0m] - Would you like to continue with the setup (y,n)' CONTINST
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to continue with the setup (y,n) ' CONTINST
 if [[ $CONTINST == "Y" || $CONTINST == "y" ]]; then
     echo -e "$CNT - Setup started."
 else
