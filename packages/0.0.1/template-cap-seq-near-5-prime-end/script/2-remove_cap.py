@@ -38,7 +38,7 @@ for name, R1R2_dir, R1, R2 in R1R2s:
                         cap_next_index = cap_start_index + len(cap_seq)
                         valid_seq = R2_seq[cap_next_index:]
                         valid_seq_len = len(valid_seq)
-                        if valid_seq_len >= 20:
+                        if valid_seq_len >= 2:
                             seq_num += 1
                             valid_qualities = quality_values[cap_next_index:]
                             assert(len(valid_qualities) == valid_seq_len)
@@ -62,7 +62,7 @@ for name, R1R2_dir, R1, R2 in R1R2s:
             cap_next_index = cap_start_index + len(cap_seq)
             valid_seq = R2_seq[cap_next_index:]
             valid_seq_len = len(valid_seq)
-            if valid_seq_len >= 20:
+            if valid_seq_len >= 2:
                 seq_num += 1
                 valid_qualities = quality_values[cap_next_index:]
                 assert(len(valid_qualities) == valid_seq_len)
